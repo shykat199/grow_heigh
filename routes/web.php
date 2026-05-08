@@ -11,6 +11,10 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TwoStepLoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ServiceFaqController;
+use App\Http\Controllers\ServiceImageController;
+use App\Http\Controllers\ServicePriceController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/service', [ServiceController::class, 'index'])->name('service');
@@ -33,5 +37,32 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::controller(DashboardController::class)->group(function () {
         Route::get('dashboard', 'index')->name('dashboard');
     });
+
+    // Category Routes
+    Route::resource('categories', CategoryController::class);
+
+    // Service Routes
+    Route::resource('services', ServiceController::class);
+
+    // Service FAQ Routes
+    Route::resource('service-faqs', ServiceFaqController::class);
+
+    // Service Image Routes
+    Route::resource('service-images', ServiceImageController::class);
+
+    // Service Price Routes
+    Route::resource('service-prices', ServicePriceController::class);
+
+    // Project Routes
+    Route::resource('projects', ProjectController::class);
+
+    // Blog Routes
+    Route::resource('blogs', BlogController::class);
+
+    // Testimonial Routes
+    Route::resource('testimonials', TestimonialController::class);
+
+    // Team Routes
+    Route::resource('teams', TeamController::class);
 
 });
