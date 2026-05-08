@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -14,7 +15,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::with('category')->get();
-        return view('projects.index', compact('projects'));
+        return view('admin.projects.index', compact('projects'));
     }
 
     /**
@@ -22,8 +23,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view('projects.create', compact('categories'));
+        $categories = Category::where('type', 'project')->get();
+        return view('admin.projects.create', compact('categories'));
     }
 
     /**
@@ -35,16 +36,24 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:projects',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'date' => 'nullable|date',
-            'status' => 'boolean',
+            'status' => 'required|in:0,1',
             'link' => 'nullable|url',
         ]);
 
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('projects', 'public');
+            $validated['image'] = $imagePath;
+        }
+
         Project::create($validated);
 
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+        return redirect()->route('admin.projects.index')->with('success', 'Project created successfully.');
     }
 
     /**
@@ -52,7 +61,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('projects.show', compact('project'));
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
@@ -60,8 +69,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        $categories = Category::all();
-        return view('projects.edit', compact('project', 'categories'));
+        $categories = Category::where('type', 'project')->get();
+        return view('admin.projects.edit', compact('project', 'categories'));
     }
 
     /**
@@ -73,16 +82,28 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:projects,slug,' . $project->id,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'date' => 'nullable|date',
-            'status' => 'boolean',
+            'status' => 'required|in:0,1',
             'link' => 'nullable|url',
         ]);
 
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($project->image && Storage::disk('public')->exists($project->image)) {
+                Storage::disk('public')->delete($project->image);
+            }
+            $image = $request->file('image');
+            $imagePath = $image->store('projects', 'public');
+            $validated['image'] = $imagePath;
+        }
+
         $project->update($validated);
 
-        return redirect()->route('projects.index')->with('success', 'Project updated successfully.');
+        return redirect()->route('admin.projects.index')->with('success', 'Project updated successfully.');
     }
 
     /**
@@ -90,8 +111,15 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        // Delete image if exists
+        if ($project->image && Storage::disk('public')->exists($project->image)) {
+            Storage::disk('public')->delete($project->image);
+        }
+
         $project->delete();
 
-        return redirect()->route('projects.index')->with('success', 'Project deleted successfully.');
+        return redirect()->route('admin.projects.index')->with('success', 'Project deleted successfully.');
     }
 }
+
+
