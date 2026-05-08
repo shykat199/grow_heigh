@@ -2,13 +2,13 @@
     <!-- Brand Logo -->
     <a href="{{route('admin.dashboard')}}" class="logo">
         <span class="logo logo-light">
-            <span class="logo-lg"><img src="{{asset('assets/images/logo.png')}}" alt="logo" /></span>
-            <span class="logo-sm"><img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo" /></span>
+            <span class="logo-lg"><img src="{{asset('admin/assets/images/logo.png')}}" alt="logo" /></span>
+            <span class="logo-sm"><img src="{{asset('admin/assets/images/logo-sm.png')}}" alt="small logo" /></span>
         </span>
 
         <span class="logo logo-dark">
-            <span class="logo-lg"><img src="{{asset('assets/images/logo-black.png')}}" alt="dark logo" /></span>
-            <span class="logo-sm"><img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo" /></span>
+            <span class="logo-lg"><img src="{{asset('admin/assets/images/logo-black.png')}}" alt="dark logo" /></span>
+            <span class="logo-sm"><img src="{{asset('admin/assets/images/logo-sm.png')}}" alt="small logo" /></span>
         </span>
     </a>
 
@@ -23,11 +23,11 @@
     </button>
 
     <div class="scrollbar" data-simplebar="">
-        <div id="user-profile-settings" class="sidenav-user" style="background: url({{asset('assets/images/user-bg-pattern.svg')}})">
+        <div id="user-profile-settings" class="sidenav-user" style="background: url({{asset('admin/assets/images/user-bg-pattern.svg')}})">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <a href="#!" class="link-reset">
-                        <img src="{{asset('assets/images/users/user-1.jpg')}}" alt="user-image" class="rounded-circle mb-2 avatar-md" />
+                        <img src="{{asset('admin/assets/images/users/user-1.jpg')}}" alt="user-image" class="rounded-circle mb-2 avatar-md" />
                         <span class="sidenav-user-name fw-bold">David Dev</span>
                         <span class="fs-12 fw-semibold" data-lang="user-role">Art Director</span>
                     </a>

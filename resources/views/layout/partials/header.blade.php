@@ -4,14 +4,14 @@
 
         <nav class="uk-navbar-container">
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="project.html">Project</a></li>
-                <li><a href="testimonials.html">Testimonials</a></li>
-                <li><a href="team.html">Team</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('home') ? 'uk-active' :''}} "><a href="{{route('home')}}">Home</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('about-us') ? 'uk-active' :''}} "><a href="{{route('about-us')}}">About</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('service') ? 'uk-active' :''}} "><a href="{{route('service')}}">Services</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('project') ? 'uk-active' :''}} "><a href="{{route('project')}}">Project</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('testimonial') ? 'uk-active' :''}} "><a href="{{route('testimonial')}}">Testimonials</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('team') ? 'uk-active' :''}} "><a href="{{route('team')}}">Team</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('blog') ? 'uk-active' :''}} "><a href="{{route('blog')}}">Blog</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('contact') ? 'uk-active' :''}} "><a href="{{route('contact')}}">Contact</a></li>
             </ul>
         </nav>
     </div>
@@ -22,7 +22,7 @@
         <div class="uk-navbar">
             <div class="logo uk-navbar-left">
                 <a href="/">
-                    <img src="assets/img/logo2.png" alt="logo" />
+                    <img src="{{asset('assets/img/logo2.png')}}" alt="logo" />
                 </a>
             </div>
 
@@ -39,14 +39,14 @@
             <div class="navbar uk-navbar-right">
                 <nav class="uk-navbar-container">
                     <ul class="uk-navbar-nav">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="project.html">Project</a></li>
-                        <li><a href="testimonials.html">Testimonials</a></li>
-                        <li><a href="team.html">Team</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('home') ? 'uk-active' :''}} "><a href="{{route('home')}}">Home</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('about-us') ? 'uk-active' :''}} "><a href="{{route('about-us')}}">About</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('service') ? 'uk-active' :''}} "><a href="{{route('service')}}">Services</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('project') ? 'uk-active' :''}} "><a href="{{route('project')}}">Project</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('testimonial') ? 'uk-active' :''}} "><a href="{{route('testimonial')}}">Testimonials</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('team') ? 'uk-active' :''}} "><a href="{{route('team')}}">Team</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('blog') ? 'uk-active' :''}} "><a href="{{route('blog')}}">Blog</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('contact') ? 'uk-active' :''}} "><a href="{{route('contact')}}">Contact</a></li>
                     </ul>
                 </nav>
 

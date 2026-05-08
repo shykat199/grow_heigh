@@ -10,6 +10,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TwoStepLoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AboutUsController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/service', [ServiceController::class, 'index'])->name('service');
@@ -18,6 +19,7 @@ Route::get('/testimonial', [TestimonialController::class, 'index'])->name('testi
 Route::get('/project', [ProjectController::class, 'index'])->name('project');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/team', [TeamController::class, 'index'])->name('team');
+Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
 
 
 
