@@ -45,3 +45,11 @@ const STUDY_MODE_ARRAY = [
     'on_campus'=>'on_campus',
     'hybrid'=>'Hybrid',
 ];
+
+const CATEGORY_TYPES = [
+    'blog' => 'Blog',
+    'service' => 'Service',
+    'project' => 'Project',
+    'other' => 'Other',
+];
+

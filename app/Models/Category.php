@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'slug', 'icon', 'short_description', 'status','type'])]
+#[Fillable(['name', 'slug', 'type', 'icon', 'short_description', 'status'])]
 class Category extends Model
 {
-
+    use HasFactory;
 }
+
+
 

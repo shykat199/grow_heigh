@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Toaster;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -21,7 +22,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -31,16 +32,45 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories',
-            'icon' => 'nullable|string',
-            'type' => 'nullable|string',
+            'slug' => 'required|string|max:255|unique:categories,slug',
+            'type' => 'nullable|string|in:blog,service,project,other',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'short_description' => 'nullable|string',
-            'status' => 'boolean',
+            'status' => 'required|in:0,1',
         ]);
+
+        if ($request->hasFile('icon')) {
+
+            $file = $request->file('icon');
+
+            $fileName = time() . '_' . uniqid('', true) . '.' . $file->getClientOriginalExtension();
+
+            // Root directory upload path
+            $uploadPath = base_path('upload/categories');
+
+            // Create directory if not exists
+            if (!file_exists($uploadPath)) {
+
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(
+                        sprintf('Directory "%s" was not created', $uploadPath)
+                    );
+                }
+            }
+
+            // Move uploaded file
+            $file->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['icon'] = 'upload/categories/' . $fileName;
+        }
 
         Category::create($validated);
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+        toast('Success', 'Category created successfully.');
+
+        return redirect()
+            ->route('admin.categories.index');
     }
 
     /**
@@ -48,7 +78,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('categories.show', compact('category'));
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -56,7 +86,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -67,15 +97,50 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:categories,slug,' . $category->id,
-            'icon' => 'nullable|string',
-            'type' => 'nullable|string',
+            'type' => 'nullable|string|in:blog,service,project,other',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'short_description' => 'nullable|string',
-            'status' => 'boolean',
+            'status' => 'required|in:0,1',
         ]);
+
+        // Upload new image
+        if ($request->hasFile('icon')) {
+
+            // Delete old image
+            if ($category->icon && file_exists(public_path($category->icon))) {
+                unlink(public_path($category->icon));
+            }
+
+            $file = $request->file('icon');
+
+            $fileName = time() . '_' . uniqid('', true) . '.' . $file->getClientOriginalExtension();
+
+            // Upload directory inside public folder
+            $uploadPath = public_path('upload/categories');
+
+            // Create folder if not exists
+            if (!file_exists($uploadPath)) {
+
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(
+                        sprintf('Directory "%s" was not created', $uploadPath)
+                    );
+                }
+            }
+
+            // Move uploaded file
+            $file->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['icon'] = 'upload/categories/' . $fileName;
+        }
 
         $category->update($validated);
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        toast('Category updated successfully.','success');
+
+        return redirect()
+            ->route('admin.categories.index');
     }
 
     /**
@@ -85,7 +150,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 }
 

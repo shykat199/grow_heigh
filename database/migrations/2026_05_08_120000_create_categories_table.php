@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->integer('type');
+            $table->string('type')->nullable()->comment('blog, service, project, other');
             $table->string('icon')->nullable();
             $table->text('short_description')->nullable();
             $table->boolean('status')->default(true);
