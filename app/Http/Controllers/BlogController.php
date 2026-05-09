@@ -16,6 +16,12 @@ class BlogController extends Controller
         return view('blog', compact('blogs'));
     }
 
+    public function frontShow($slug)
+    {
+        $blog = Blog::with('category')->where('slug', $slug)->first();
+        // return view('blog-details', compact('blog'));
+    }
+
     /**
      * Display a listing of the resource.
      */

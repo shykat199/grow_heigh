@@ -6,17 +6,19 @@
             <div class="item">
                 <div class="single-footer-widget">
                     <div class="logo">
-                        <a href="/">
-                            <img src="assets/img/logo2.png" alt="logo" />
+                        <a href="{{ route('home') }}">
+                            <img src="{{ asset($siteSettingData['site_logo'] ?? '') }}"  alt="logo" style="height: 60px; width: auto;">
                         </a>
                     </div>
 
                     <p>
-                        Grow High Agency is your trusted partner for digital growth,
-                        reputation management, and online success
+                        {!! $siteSettingData['footer_short_description'] ?? '' !!}
                     </p>
                 </div>
             </div>
+            @php
+$services = App\Models\Service::all()
+            @endphp
 
             <div class="item">
                 <div class="single-footer-widget">
@@ -24,73 +26,33 @@
                     <div class="bar"></div>
 
                     <ul style="list-style: none; padding: 0; margin: 0">
-                        <li style="margin-bottom: 10px">
-                            <a
-                                href="single-services.html"
-                                style="
+                        @foreach ($services as $service)
+                            <li style="margin-bottom: 10px">
+                                <a
+                                    href="{{ route('service.show', $service->slug) }}"
+                                    style="
                       color: rgba(255, 255, 255, 0.8);
                       text-decoration: none;
                       transition: all 0.3s ease;
                     "
-                                onmouseover="this.style.color = 'white'"
-                                onmouseout="this.style.color = 'rgba(255, 255, 255, 0.8)'"
-                            >Reputation Management</a
-                            >
-                        </li>
-                        <li style="margin-bottom: 10px">
-                            <a
-                                href="single-services.html"
-                                style="
-                      color: rgba(255, 255, 255, 0.8);
-                      text-decoration: none;
-                      transition: all 0.3s ease;
-                    "
-                                onmouseover="this.style.color = 'white'"
-                                onmouseout="this.style.color = 'rgba(255, 255, 255, 0.8)'"
-                            >Social Media Growth</a
-                            >
-                        </li>
-                        <li style="margin-bottom: 10px">
-                            <a
-                                href="single-services.html"
-                                style="
-                      color: rgba(255, 255, 255, 0.8);
-                      text-decoration: none;
-                      transition: all 0.3s ease;
-                    "
-                                onmouseover="this.style.color = 'white'"
-                                onmouseout="this.style.color = 'rgba(255, 255, 255, 0.8)'"
-                            >SEO Services</a
-                            >
-                        </li>
-                        <li>
-                            <a
-                                href="single-services.html"
-                                style="
-                      color: rgba(255, 255, 255, 0.8);
-                      text-decoration: none;
-                      transition: all 0.3s ease;
-                    "
-                                onmouseover="this.style.color = 'white'"
-                                onmouseout="this.style.color = 'rgba(255, 255, 255, 0.8)'"
-                            >Web Design</a
-                            >
-                        </li>
+                                    onmouseover="this.style.color = 'white'"
+                                    onmouseout="this.style.color = 'rgba(255, 255, 255, 0.8)'"
+                                >{{ $service->name }}</a
+                                >
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
 
             <div class="item">
                 <div class="single-footer-widget">
-                    <h3>London</h3>
+                    <h3>Address</h3>
                     <div class="bar"></div>
 
                     <div class="location">
                         <p>
-                            352/71 Second Street <br />
-                            King Street <br />
-                            Kingston <br />
-                            United Kingdom
+                            {!! $siteSettingData['location_address'] ?? '' !!}
                         </p>
                     </div>
                 </div>
@@ -103,26 +65,47 @@
 
                     <ul class="contact-info">
                         <li>
-                            <a href="#"><span>info@gunter.com</span></a>
+                            <a href="#"><span>{{ $siteSettingData['contact_email'] ?? '' }}</span></a>
                         </li>
                         <li>
-                            <a href="#"><span>fax@gunter.com</span></a>
+                            <a href="#"><span>{{ $siteSettingData['contact_fax'] ?? '' }}</span></a>
                         </li>
-                        <li><a href="#">+44 478 541 7452</a></li>
+                        <li><a href="#">{{ $siteSettingData['contact_number'] ?? '' }}</a></li>
                     </ul>
                     <ul class="social">
-                        <li>
-                            <a href="#"><i class="flaticon-logo"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-logo-1"></i></a>
-                        </li>
+                    
+                        @if(!empty($siteSettingData['facebook_link']))
+                            <li>
+                                <a href="{{ $siteSettingData['facebook_link'] }}" target="_blank">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
+                            </li>
+                        @endif
+                    
+                        @if(!empty($siteSettingData['twitter_link']))
+                            <li>
+                                <a href="{{ $siteSettingData['twitter_link'] }}" target="_blank">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                            </li>
+                        @endif
+                    
+                        @if(!empty($siteSettingData['linkedin_link']))
+                            <li>
+                                <a href="{{ $siteSettingData['linkedin_link'] }}" target="_blank">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        @endif
+                    
+                        @if(!empty($siteSettingData['instagram_link']))
+                            <li>
+                                <a href="{{ $siteSettingData['instagram_link'] }}" target="_blank">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                            </li>
+                        @endif
+                    
                     </ul>
                 </div>
             </div>
@@ -143,15 +126,17 @@
                     </ul>
                 </div>
             </div>
-            <div class="go-top"><i class="flaticon-chevron"></i></div>
+            <div class="go-top">
+                <i class="fa-solid fa-chevron-up"></i>
+            </div>
         </div>
     </div>
 
     <div class="br-line"></div>
     <div class="footer-shape1">
-        <img src="assets/img/footer-shape1.png" alt="shape" />
+        <img src="{{ asset('assets/img/footer-shape1.png') }}" alt="shape" />
     </div>
     <div class="footer-shape2">
-        <img src="assets/img/footer-shape2.png" alt="shape" />
+        <img src="{{ asset('assets/img/footer-shape2.png') }}" alt="shape" />
     </div>
 </footer>

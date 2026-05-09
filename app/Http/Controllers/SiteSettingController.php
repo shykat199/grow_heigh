@@ -10,28 +10,73 @@ class SiteSettingController extends Controller
     public function index()
     {
         $settings = SiteSetting::pluck('value', 'key')->all();
+
         return view('admin.site_settings.index', compact('settings'));
     }
 
     public function update(Request $request)
     {
         $data = $request->except(['_token', '_method', 'site_logo', 'site_favicon']);
-        
-        // Handle Site Logo Upload
+
+        /*
+        |--------------------------------------------------------------------------
+        | Handle Site Logo Upload
+        |--------------------------------------------------------------------------
+        */
         if ($request->hasFile('site_logo')) {
-            $logoPath = $request->file('site_logo')->store('site_settings', 'public');
+
+            $logo = $request->file('site_logo');
+
+            // Generate unique filename
+            $logoName = time().'_logo_'.uniqid().'.'.$logo->getClientOriginalExtension();
+
+            // Upload path
+            $logoPath = public_path('uploads/site_settings');
+
+            // Create folder if not exists
+            if (! file_exists($logoPath)) {
+
+                mkdir($logoPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $logo->move($logoPath, $logoName);
+
+            // Save path in database
             SiteSetting::updateOrCreate(
                 ['key' => 'site_logo'],
-                ['value' => 'storage/' . $logoPath]
+                ['value' => 'uploads/site_settings/'.$logoName]
             );
         }
 
-        // Handle Favicon Upload
+        /*
+        |--------------------------------------------------------------------------
+        | Handle Favicon Upload
+        |--------------------------------------------------------------------------
+        */
         if ($request->hasFile('site_favicon')) {
-            $faviconPath = $request->file('site_favicon')->store('site_settings', 'public');
+
+            $favicon = $request->file('site_favicon');
+
+            // Generate unique filename
+            $faviconName = time().'_favicon_'.uniqid().'.'.$favicon->getClientOriginalExtension();
+
+            // Upload path
+            $faviconPath = public_path('uploads/site_settings');
+
+            // Create folder if not exists
+            if (! file_exists($faviconPath)) {
+
+                mkdir($faviconPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $favicon->move($faviconPath, $faviconName);
+
+            // Save path in database
             SiteSetting::updateOrCreate(
                 ['key' => 'site_favicon'],
-                ['value' => 'storage/' . $faviconPath]
+                ['value' => 'uploads/site_settings/'.$faviconName]
             );
         }
 

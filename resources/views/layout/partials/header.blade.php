@@ -4,14 +4,14 @@
 
         <nav class="uk-navbar-container">
             <ul class="uk-navbar-nav">
-                <li class="{{\Illuminate\Support\Facades\Route::is('home') ? 'uk-active' :''}} "><a href="{{route('home')}}">Home</a></li>
-                <li class="{{\Illuminate\Support\Facades\Route::is('about-us') ? 'uk-active' :''}} "><a href="{{route('about-us')}}">About</a></li>
-                <li class="{{\Illuminate\Support\Facades\Route::is('service') ? 'uk-active' :''}} "><a href="{{route('service')}}">Services</a></li>
-                <li class="{{\Illuminate\Support\Facades\Route::is('project') ? 'uk-active' :''}} "><a href="{{route('project')}}">Project</a></li>
-                <li class="{{\Illuminate\Support\Facades\Route::is('testimonial') ? 'uk-active' :''}} "><a href="{{route('testimonial')}}">Testimonials</a></li>
-                <li class="{{\Illuminate\Support\Facades\Route::is('team') ? 'uk-active' :''}} "><a href="{{route('team')}}">Team</a></li>
-                <li class="{{\Illuminate\Support\Facades\Route::is('blog') ? 'uk-active' :''}} "><a href="{{route('blog')}}">Blog</a></li>
-                <li class="{{\Illuminate\Support\Facades\Route::is('contact') ? 'uk-active' :''}} "><a href="{{route('contact')}}">Contact</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('home') ? 'uk-active' : ''}} "><a href="{{route('home')}}">Home</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('about-us') ? 'uk-active' : ''}} "><a href="{{route('about-us')}}">About</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('service') ? 'uk-active' : ''}} "><a href="{{route('service')}}">Services</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('project') ? 'uk-active' : ''}} "><a href="{{route('project')}}">Project</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('testimonial') ? 'uk-active' : ''}} "><a href="{{route('testimonial')}}">Testimonials</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('team') ? 'uk-active' : ''}} "><a href="{{route('team')}}">Team</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('blog') ? 'uk-active' : ''}} "><a href="{{route('blog')}}">Blog</a></li>
+                <li class="{{\Illuminate\Support\Facades\Route::is('contact') ? 'uk-active' : ''}} "><a href="{{route('contact')}}">Contact</a></li>
             </ul>
         </nav>
     </div>
@@ -22,7 +22,7 @@
         <div class="uk-navbar">
             <div class="logo uk-navbar-left">
                 <a href="/">
-                    <img src="{{asset('assets/img/logo2.png')}}" alt="logo" />
+                    <img src="{{ asset($siteSettingData['site_logo'] ?? '') }}" alt="logo" style="height: 60px; width: auto;">
                 </a>
             </div>
 
@@ -39,14 +39,14 @@
             <div class="navbar uk-navbar-right">
                 <nav class="uk-navbar-container">
                     <ul class="uk-navbar-nav">
-                        <li class="{{\Illuminate\Support\Facades\Route::is('home') ? 'uk-active' :''}} "><a href="{{route('home')}}">Home</a></li>
-                        <li class="{{\Illuminate\Support\Facades\Route::is('about-us') ? 'uk-active' :''}} "><a href="{{route('about-us')}}">About</a></li>
-                        <li class="{{\Illuminate\Support\Facades\Route::is('service') ? 'uk-active' :''}} "><a href="{{route('service')}}">Services</a></li>
-                        <li class="{{\Illuminate\Support\Facades\Route::is('project') ? 'uk-active' :''}} "><a href="{{route('project')}}">Project</a></li>
-                        <li class="{{\Illuminate\Support\Facades\Route::is('testimonial') ? 'uk-active' :''}} "><a href="{{route('testimonial')}}">Testimonials</a></li>
-                        <li class="{{\Illuminate\Support\Facades\Route::is('team') ? 'uk-active' :''}} "><a href="{{route('team')}}">Team</a></li>
-                        <li class="{{\Illuminate\Support\Facades\Route::is('blog') ? 'uk-active' :''}} "><a href="{{route('blog')}}">Blog</a></li>
-                        <li class="{{\Illuminate\Support\Facades\Route::is('contact') ? 'uk-active' :''}} "><a href="{{route('contact')}}">Contact</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('home') ? 'uk-active' : ''}} "><a href="{{route('home')}}">Home</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('about-us') ? 'uk-active' : ''}} "><a href="{{route('about-us')}}">About</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('service') ? 'uk-active' : ''}} "><a href="{{route('service')}}">Services</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('project') ? 'uk-active' : ''}} "><a href="{{route('project')}}">Project</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('testimonial') ? 'uk-active' : ''}} "><a href="{{route('testimonial')}}">Testimonials</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('team') ? 'uk-active' : ''}} "><a href="{{route('team')}}">Team</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('blog') ? 'uk-active' : ''}} "><a href="{{route('blog')}}">Blog</a></li>
+                        <li class="{{\Illuminate\Support\Facades\Route::is('contact') ? 'uk-active' : ''}} "><a href="{{route('contact')}}">Contact</a></li>
                     </ul>
                 </nav>
 

@@ -30,8 +30,8 @@
                     <a href="#!" class="link-reset">
                         <img src="{{ asset('admin/assets/images/users/user-1.jpg') }}" alt="user-image"
                             class="rounded-circle mb-2 avatar-md" />
-                        <span class="sidenav-user-name fw-bold">David Dev</span>
-                        <span class="fs-12 fw-semibold" data-lang="user-role">Art Director</span>
+                        <span class="sidenav-user-name fw-bold">{{ auth()->user()->name }}</span>
+                        <span class="fs-12 fw-semibold" data-lang="user-role">Admin Head</span>
                     </a>
                 </div>
                 <div>
@@ -47,17 +47,15 @@
                             <h6 class="text-overflow m-0">Welcome back!</h6>
                         </div>
 
-                        <!-- My Profile -->
-                        <a href="#!" class="dropdown-item">
-                            <i class="ti ti-user-circle me-1 fs-lg align-middle"></i>
-                            <span class="align-middle">Profile</span>
-                        </a>
-
                         <!-- Logout -->
-                        <a href="javascript:void(0);" class="dropdown-item text-danger fw-semibold">
+                        <a href="javascript:void(0);" class="dropdown-item text-danger fw-semibold" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <i class="ti ti-logout me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Log Out</span>
                         </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </div>

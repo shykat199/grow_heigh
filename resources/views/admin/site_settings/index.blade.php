@@ -65,6 +65,10 @@
                                     <label for="about_us_description" class="form-label">About Us Description</label>
                                     <textarea class="form-control ckeditor" id="about_us_description" name="about_us_description" rows="4">{{ $settings['about_us_description'] ?? '' }}</textarea>
                                 </div>
+                                <div class="col-md-12">
+                                    <label for="about_us_short_description" class="form-label">About Us Short Description</label>
+                                    <textarea class="form-control ckeditor" id="about_us_short_description" name="about_us_short_description" rows="4">{{ $settings['about_us_short_description'] ?? '' }}</textarea>
+                                </div>
                             </div>
 
                             <h5 class="mt-4 mb-3">Footer & Contact Settings</h5>

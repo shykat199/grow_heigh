@@ -16,13 +16,16 @@
     <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}" />
 
     <title>Grow Heigh Agency | @yield('title')</title>
-    <link rel="icon" type="image/png" href="{{asset('assets/img/favicon.png')}}" />
+    <link rel="icon" type="image/png" href="{{asset($siteSettingData['site_favicon'] ?? '')}}" />
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer"
     />
+
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 <!-- Start Preloader Area -->

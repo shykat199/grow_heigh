@@ -83,7 +83,7 @@
                              alt="user-image"/>
                         <div class="d-lg-flex align-items-center gap-1 d-none">
                             <span>
-                                <h5 class="my-0 lh-1 pro-username">David Dev</h5>
+                                <h5 class="my-0 lh-1 pro-username">{{ auth()->user()->name }}</h5>
                                 <span class="fs-xs lh-1">Admin Head</span>
                             </span>
                             <i class="ti ti-chevron-down align-middle"></i>
@@ -96,10 +96,10 @@
                         </div>
 
                         <!-- My Profile -->
-                        <a href="#!" class="dropdown-item">
+                        {{-- <a href="#!" class="dropdown-item">
                             <i class="ti ti-user-circle me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Profile</span>
-                        </a>
+                        </a> --}}
 
                         <!-- Divider -->
                         <div class="dropdown-divider"></div>
