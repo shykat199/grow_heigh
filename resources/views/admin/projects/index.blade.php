@@ -50,7 +50,6 @@
                                 <th data-table-sort="title">Title</th>
                                 <th data-table-sort="slug">Slug</th>
                                 <th data-table-sort="category">Category</th>
-                                <th data-table-sort="image">Image</th>
                                 <th data-table-sort="date">Date</th>
                                 <th data-table-sort data-column="status">Status</th>
                                 <th class="text-center" style="width: 1%">Actions</th>
@@ -66,7 +65,7 @@
                                     <div class="d-flex align-items-center">
                                         @if($project->image)
                                         <div class="avatar-md me-3">
-                                            <img src="{{ asset('storage/' . $project->image) }}" alt="Project" class="img-fluid rounded" style="height: 50px; object-fit: cover;" />
+                                            <img src="{{ asset($project->image) }}" alt="Project" class="img-fluid rounded" style="height: 50px; object-fit: cover;" />
                                         </div>
                                         @endif
                                         <div>
@@ -81,13 +80,6 @@
                                 <td>
                                     @if($project->category)
                                         <span class="badge badge-soft-primary fs-xxs">{{ $project->category->name }}</span>
-                                    @else
-                                        <span class="badge badge-soft-secondary fs-xxs">N/A</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($project->image)
-                                        <span class="badge badge-soft-success fs-xxs">Present</span>
                                     @else
                                         <span class="badge badge-soft-secondary fs-xxs">N/A</span>
                                     @endif

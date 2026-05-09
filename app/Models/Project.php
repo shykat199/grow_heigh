@@ -12,6 +12,10 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'date' => 'date',
+    ];
+
     /**
      * Get the category that owns the project.
      */
@@ -20,4 +24,3 @@ class Project extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 }
-

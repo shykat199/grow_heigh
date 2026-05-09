@@ -28,7 +28,7 @@
                             <div class="col-md-4">
                                 @if($project->image)
                                     <div class="mb-3">
-                                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->name }}" class="img-fluid rounded" />
+                                        <img src="{{ asset( $project->image) }}" alt="{{ $project->name }}" class="img-fluid rounded" />
                                     </div>
                                 @else
                                     <div class="mb-3 bg-light rounded p-5 text-center">
@@ -108,7 +108,7 @@
                                 <div class="mb-3">
                                     <label class="form-label text-muted">Description</label>
                                     <div class="p-3 bg-light rounded">
-                                        <p class="mb-0">{{ $project->description ?? 'No description provided' }}</p>
+                                        {!! $project->description ?? 'No description provided' !!}
                                     </div>
                                 </div>
                             </div>

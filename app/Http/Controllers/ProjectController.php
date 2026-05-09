@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use App\Models\Category;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,6 +15,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::with('category')->get();
+
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -24,6 +25,7 @@ class ProjectController extends Controller
     public function create()
     {
         $categories = Category::where('type', 'project')->get();
+
         return view('admin.projects.create', compact('categories'));
     }
 
@@ -36,7 +38,7 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:projects',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'date' => 'nullable|date',
@@ -46,14 +48,33 @@ class ProjectController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image')) {
+
             $image = $request->file('image');
-            $imagePath = $image->store('projects', 'public');
-            $validated['image'] = $imagePath;
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/projects');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save path in DB
+            $validated['image'] = 'uploads/projects/'.$fileName;
         }
 
         Project::create($validated);
 
-        return redirect()->route('admin.projects.index')->with('success', 'Project created successfully.');
+        toast('Project created successfully.','success');
+
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -70,6 +91,7 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $categories = Category::where('type', 'project')->get();
+
         return view('admin.projects.edit', compact('project', 'categories'));
     }
 
@@ -81,8 +103,8 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:projects,slug,' . $project->id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' => 'required|string|max:255|unique:projects,slug,'.$project->id,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'date' => 'nullable|date',
@@ -92,18 +114,39 @@ class ProjectController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($project->image && Storage::disk('public')->exists($project->image)) {
-                Storage::disk('public')->delete($project->image);
+
+            // Delete old image
+            if ($project->image && file_exists(public_path($project->image))) {
+
+                unlink(public_path($project->image));
             }
+
             $image = $request->file('image');
-            $imagePath = $image->store('projects', 'public');
-            $validated['image'] = $imagePath;
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/projects');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save path in DB
+            $validated['image'] = 'uploads/projects/'.$fileName;
         }
+
+        toast('Project updated successfully.','success');
 
         $project->update($validated);
 
-        return redirect()->route('admin.projects.index')->with('success', 'Project updated successfully.');
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -121,5 +164,3 @@ class ProjectController extends Controller
         return redirect()->route('admin.projects.index')->with('success', 'Project deleted successfully.');
     }
 }
-
-

@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 
-@section('title',$category->name)
+@section('title', $category->name)
 @push('style')
 @endpush
 @section('content')
@@ -42,9 +42,10 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label text-muted">Category Type</label>
-                                    @if($category->type)
+                                    @if ($category->type)
                                         <p class="fs-5 fw-semibold">
-                                            <span class="badge badge-soft-info">{{ CATEGORY_TYPES[$category->type] ?? $category->type }}</span>
+                                            <span
+                                                class="badge badge-soft-info">{{ CATEGORY_TYPES[$category->type] ?? $category->type }}</span>
                                         </p>
                                     @else
                                         <p class="fs-5 fw-semibold text-muted">Not set</p>
@@ -53,24 +54,28 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label text-muted">Icon</label>
-                                    @if($category->icon)
-                                        <p class="fs-5 fw-semibold">
-                                            <i class="ti {{ $category->icon }} fs-24"></i>
-                                            <span class="ms-2">{{ $category->icon }}</span>
-                                        </p>
+
+                                <div class="col-md-4">
+                                    @if ($category->icon)
+                                        <div class="mb-3">
+                                            <img src="{{ asset($category->icon) }}" alt="{{ $category->name }}"
+                                                class="img-fluid rounded" />
+                                        </div>
                                     @else
-                                        <p class="fs-5 fw-semibold text-muted">Not set</p>
+                                        <div class="mb-3 bg-light rounded p-5 text-center">
+                                            <i class="ti ti-photo-off fs-40 text-muted"></i>
+                                            <p class="text-muted mt-2">No image</p>
+                                        </div>
                                     @endif
                                 </div>
+
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label text-muted">Status</label>
                                     <p>
-                                        @if($category->status)
+                                        @if ($category->status)
                                             <span class="badge badge-soft-success">Active</span>
                                         @else
                                             <span class="badge badge-soft-danger">Inactive</span>
@@ -79,10 +84,13 @@
                                 </div>
                             </div>
 
+
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label class="form-label text-muted">Short Description</label>
-                                    <p class="fs-5">{{ $category->short_description ?? 'No description provided' }}</p>
+                                    <label class="form-label text-muted">Description</label>
+                                    <div class="p-3 bg-light rounded">
+                                        {!! $category->short_description !!}
+                                    </div>
                                 </div>
                             </div>
 
@@ -108,8 +116,10 @@
                 <div class="card border-danger">
                     <div class="card-body">
                         <h5 class="card-title text-danger">Danger Zone</h5>
-                        <p class="text-muted mb-3">Once you delete this category, there is no going back. Please be certain.</p>
-                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category? This action cannot be undone.')">
+                        <p class="text-muted mb-3">Once you delete this category, there is no going back. Please be certain.
+                        </p>
+                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
+                            onsubmit="return confirm('Are you sure you want to delete this category? This action cannot be undone.')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">
@@ -125,4 +135,3 @@
 
 @push('scripts')
 @endpush
-

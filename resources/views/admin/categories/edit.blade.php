@@ -116,7 +116,7 @@
                                     <label for="short_description" class="form-label">Short Description</label>
                                     <textarea id="short_description"
                                               name="short_description"
-                                              class="form-control @error('short_description') is-invalid @enderror"
+                                              class="form-control ckeditor @error('short_description') is-invalid @enderror"
                                               rows="3"
                                               placeholder="Brief description of the category...">{{ old('short_description', $category->short_description) }}</textarea>
                                     @error('short_description')
@@ -144,6 +144,18 @@
 @endsection
 
 @push('scripts')
+
+<script src="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('textarea.ckeditor').forEach(function (textarea) {
+                // Prevent double initialization
+                if (!CKEDITOR.instances[textarea.id]) {
+                    CKEDITOR.replace(textarea.id);
+                }
+            });
+        });
+    </script>
 
     <script>
         document.getElementById('name').addEventListener('input', function () {

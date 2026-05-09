@@ -87,16 +87,28 @@
 
                                 <!-- Project Image -->
                                 <div class="col-md-6">
-                                    <label for="image" class="form-label">Project Image</label>
+                                    <label for="image" class="form-label">
+                                        Project Image
+                                    </label>
+
                                     <input type="file"
                                            class="form-control @error('image') is-invalid @enderror"
                                            id="image"
                                            name="image"
                                            accept="image/*" />
-                                    <small class="text-muted">Supported: JPEG, PNG, JPG, GIF (Max 2MB)</small>
+
                                     @error('image')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
+
+                                    <!-- Preview Box -->
+                                    <div class="mt-3">
+                                        <img id="imagePreview"
+                                             src="https://placehold.co/150x150?text=Preview"
+                                             alt="Preview"
+                                             class="img-thumbnail shadow-sm"
+                                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 12px;">
+                                    </div>
                                 </div>
 
                                 <!-- Date -->
@@ -115,10 +127,7 @@
                                 <!-- Status -->
                                 <div class="col-md-6">
                                     <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                                    <select id="status"
-                                            name="status"
-                                            class="form-select @error('status') is-invalid @enderror"
-                                            required>
+                                    <select name="status" class="form-select @error('status') is-invalid @enderror" required>
                                         <option value="">Select Status</option>
                                         <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
                                         <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
@@ -147,7 +156,7 @@
                                     <label for="description" class="form-label">Description</label>
                                     <textarea id="description"
                                               name="description"
-                                              class="form-control @error('description') is-invalid @enderror"
+                                              class="form-control ckeditor @error('description') is-invalid @enderror"
                                               rows="4"
                                               placeholder="Project description...">{{ old('description') }}</textarea>
                                     @error('description')
@@ -175,5 +184,44 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('textarea.ckeditor').forEach(function (textarea) {
+                // Prevent double initialization
+                if (!CKEDITOR.instances[textarea.id]) {
+                    CKEDITOR.replace(textarea.id);
+                }
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('name').addEventListener('input', function () {
+            let slug = this.value
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+
+            document.getElementById('slug').value = slug;
+        });
+    </script>
+
+    <script>
+        document.getElementById('image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (event) {
+                    document.getElementById('imagePreview').src = event.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 @endpush
 
