@@ -108,6 +108,12 @@
                         <span class="menu-text">Team Members</span>
                     </a>
                 </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.site-settings.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-settings"></i></span>
+                        <span class="menu-text">Site Settings</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

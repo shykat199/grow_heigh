@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
+
+    public function frontIndex()
+    {
+        $projects = Project::with('category')->latest()->get();
+        return view('project', compact('projects'));
+    }
+
     /**
      * Display a listing of the resource.
      */

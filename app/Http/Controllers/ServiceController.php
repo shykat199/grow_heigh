@@ -13,6 +13,13 @@ use Illuminate\Support\Str;
 
 class ServiceController extends Controller
 {
+
+    public function frontIndex()
+    {
+        $services = Service::with('category')->latest()->get();
+        return view('service', compact('services'));
+    }
+
     public function index()
     {
         $services = Service::with('category')->latest()->get();

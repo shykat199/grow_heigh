@@ -9,6 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
+
+    public function frontIndex()
+    {
+        $blogs = Blog::with('category')->latest()->get();
+        return view('blog', compact('blogs'));
+    }
+
     /**
      * Display a listing of the resource.
      */

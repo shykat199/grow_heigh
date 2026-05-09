@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class TestimonialController extends Controller
 {
+
+    public function frontIndex()
+    {
+        $testimonials = Testimonial::latest()->get();
+        return view('testimonial', compact('testimonials'));
+    }
     /**
      * Display a listing of the resource.
      */

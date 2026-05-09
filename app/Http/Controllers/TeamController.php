@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 class TeamController extends Controller
 {
+
+    public function frontIndex()
+    {
+        $teams = Team::latest()->get();
+        return view('team', compact('teams'));
+    }
+
     /**
      * Display a listing of the resource.
      */

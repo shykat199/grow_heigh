@@ -15,15 +15,16 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ServiceFaqController;
 use App\Http\Controllers\ServiceImageController;
 use App\Http\Controllers\ServicePriceController;
+use App\Http\Controllers\SiteSettingController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/service', [ServiceController::class, 'index'])->name('service');
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
-Route::get('/testimonial', [TestimonialController::class, 'index'])->name('testimonial');
-Route::get('/project', [ProjectController::class, 'index'])->name('project');
-Route::get('/blog', [BlogController::class, 'index'])->name('blog');
-Route::get('/team', [TeamController::class, 'index'])->name('team');
-Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
+Route::get('/service', [ServiceController::class, 'frontIndex'])->name('service');
+Route::get('/contact', [ContactController::class, 'frontIndex'])->name('contact');
+Route::get('/testimonial', [TestimonialController::class, 'frontIndex'])->name('testimonial');
+Route::get('/project', [ProjectController::class, 'frontIndex'])->name('project');
+Route::get('/blog', [BlogController::class, 'frontIndex'])->name('blog');
+Route::get('/team', [TeamController::class, 'frontIndex'])->name('team');
+Route::get('/about-us', [AboutUsController::class, 'frontIndex'])->name('about-us');
 
 
 
@@ -64,5 +65,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Team Routes
     Route::resource('teams', TeamController::class);
+
+    // Site Setting Routes
+    Route::get('site-settings', [SiteSettingController::class, 'index'])->name('site-settings.index');
+    Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
 
 });
