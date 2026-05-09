@@ -19,11 +19,31 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('admin.site-settings.update') }}" method="POST">
+                        <form action="{{ route('admin.site-settings.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             
-                            <h5 class="mb-3">Home Page Settings</h5>
+                            <h5 class="mb-3">Branding Settings</h5>
+                            <div class="row g-3">
+                                <!-- Site Logo -->
+                                <div class="col-md-6">
+                                    <label for="site_logo" class="form-label">Site Logo</label>
+                                    <input type="file" class="form-control" id="site_logo" name="site_logo" accept="image/*">
+                                    <div class="mt-3">
+                                        <img id="logoPreview" src="{{ isset($settings['site_logo']) ? asset($settings['site_logo']) : 'https://placehold.co/150x50?text=Logo' }}" alt="Logo Preview" class="img-thumbnail shadow-sm" style="max-width: 150px; max-height: 80px; object-fit: contain; border-radius: 8px;">
+                                    </div>
+                                </div>
+                                <!-- Favicon -->
+                                <div class="col-md-6">
+                                    <label for="site_favicon" class="form-label">Favicon</label>
+                                    <input type="file" class="form-control" id="site_favicon" name="site_favicon" accept="image/*">
+                                    <div class="mt-3">
+                                        <img id="faviconPreview" src="{{ isset($settings['site_favicon']) ? asset($settings['site_favicon']) : 'https://placehold.co/50x50?text=Fav' }}" alt="Favicon Preview" class="img-thumbnail shadow-sm" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="mt-4 mb-3">Home Page Settings</h5>
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="homepage_title" class="form-label">Homepage Title</label>
@@ -61,9 +81,26 @@
                                     <label for="contact_fax" class="form-label">Contact Fax</label>
                                     <input type="text" class="form-control" id="contact_fax" name="contact_fax" value="{{ $settings['contact_fax'] ?? '' }}">
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="social_media_link" class="form-label">Social Media Link</label>
-                                    <input type="text" class="form-control" id="social_media_link" name="social_media_link" value="{{ $settings['social_media_link'] ?? '' }}" placeholder="e.g. https://facebook.com/yourpage">
+                                <h5 class="mt-4 mb-3 col-12">Social Media Links</h5>
+                                <div class="col-md-4">
+                                    <label for="facebook_link" class="form-label">Facebook Link</label>
+                                    <input type="text" class="form-control" id="facebook_link" name="facebook_link" value="{{ $settings['facebook_link'] ?? '' }}" placeholder="https://facebook.com/yourpage">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="youtube_link" class="form-label">YouTube Link</label>
+                                    <input type="text" class="form-control" id="youtube_link" name="youtube_link" value="{{ $settings['youtube_link'] ?? '' }}" placeholder="https://youtube.com/@yourchannel">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="twitter_link" class="form-label">Twitter / X Link</label>
+                                    <input type="text" class="form-control" id="twitter_link" name="twitter_link" value="{{ $settings['twitter_link'] ?? '' }}" placeholder="https://twitter.com/yourhandle">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="instagram_link" class="form-label">Instagram Link</label>
+                                    <input type="text" class="form-control" id="instagram_link" name="instagram_link" value="{{ $settings['instagram_link'] ?? '' }}" placeholder="https://instagram.com/yourprofile">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="linkedin_link" class="form-label">LinkedIn Link</label>
+                                    <input type="text" class="form-control" id="linkedin_link" name="linkedin_link" value="{{ $settings['linkedin_link'] ?? '' }}" placeholder="https://linkedin.com/company/yourcompany">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="location_address" class="form-label">Location Address</label>
@@ -100,5 +137,22 @@
             }
         });
     });
+
+    // Image preview logic
+    function setupImagePreview(inputId, previewId) {
+        document.getElementById(inputId).addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    document.getElementById(previewId).src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    setupImagePreview('site_logo', 'logoPreview');
+    setupImagePreview('site_favicon', 'faviconPreview');
 </script>
 @endpush
