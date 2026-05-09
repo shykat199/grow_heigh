@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title','Team')
+@section('title', 'Team')
 @push('style')
 @endpush
 
@@ -9,7 +9,7 @@
         <div class="uk-container">
             <h1>Team</h1>
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="{{ route('home') }}">Home</a></li>
                 <li>Team</li>
             </ul>
         </div>
@@ -22,149 +22,59 @@
             <div
                 class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-3@m uk-child-width-1-2@s"
             >
-                <div class="single-team">
-                    <ul class="team-social">
-                        <li>
-                            <a href="#"><i class="flaticon-logo"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-logo-1"></i></a>
-                        </li>
-                    </ul>
-
-                    <img src="assets/img/team1.jpg" alt="image" />
-
-                    <div class="team-content">
-                        <h3>Josh Buttler</h3>
-                        <span>Content Writer</span>
-                    </div>
-                </div>
+            @foreach ($teams as $team)
 
                 <div class="single-team">
+
                     <ul class="team-social">
-                        <li>
-                            <a href="#"><i class="flaticon-logo"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-logo-1"></i></a>
-                        </li>
+
+                        @if($team->fb_link)
+                            <li>
+                                <a href="{{ $team->fb_link }}" target="_blank">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($team->twitter_link)
+                            <li>
+                                <a href="{{ $team->twitter_link }}" target="_blank">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($team->linkedin_link)
+                            <li>
+                                <a href="{{ $team->linkedin_link }}" target="_blank">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($team->insta_link)
+                            <li>
+                                <a href="{{ $team->insta_link }}" target="_blank">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                            </li>
+                        @endif
+
                     </ul>
 
-                    <img src="assets/img/team2.jpg" alt="image" />
+                    <img src="{{ asset($team->image) }}" alt="{{ $team->name }}" />
 
                     <div class="team-content">
-                        <h3>David Warner</h3>
-                        <span>UX/UI Designer</span>
+
+                        <h3>{{ $team->name }}</h3>
+
+                        <span>{{ $team->position }}</span>
+
                     </div>
+
                 </div>
 
-                <div class="single-team">
-                    <ul class="team-social">
-                        <li>
-                            <a href="#"><i class="flaticon-logo"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-logo-1"></i></a>
-                        </li>
-                    </ul>
-
-                    <img src="assets/img/team3.jpg" alt="image" />
-
-                    <div class="team-content">
-                        <h3>Emili Lucy</h3>
-                        <span>Project Manager</span>
-                    </div>
-                </div>
-
-                <div class="single-team">
-                    <ul class="team-social">
-                        <li>
-                            <a href="#"><i class="flaticon-logo"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-logo-1"></i></a>
-                        </li>
-                    </ul>
-
-                    <img src="assets/img/team4.jpg" alt="image" />
-
-                    <div class="team-content">
-                        <h3>Steven Smith</h3>
-                        <span>Marketing Manager</span>
-                    </div>
-                </div>
-
-                <div class="single-team">
-                    <ul class="team-social">
-                        <li>
-                            <a href="#"><i class="flaticon-logo"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-logo-1"></i></a>
-                        </li>
-                    </ul>
-
-                    <img src="assets/img/team5.jpg" alt="image" />
-
-                    <div class="team-content">
-                        <h3>Steve Eva</h3>
-                        <span>Creative Designer</span>
-                    </div>
-                </div>
-
-                <div class="single-team">
-                    <ul class="team-social">
-                        <li>
-                            <a href="#"><i class="flaticon-logo"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-linkedin"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="flaticon-logo-1"></i></a>
-                        </li>
-                    </ul>
-
-                    <img src="assets/img/team1.jpg" alt="image" />
-
-                    <div class="team-content">
-                        <h3>Josh Buttler</h3>
-                        <span>Content Writer</span>
-                    </div>
-                </div>
+            @endforeach
             </div>
         </div>
     </section>

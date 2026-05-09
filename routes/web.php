@@ -23,6 +23,7 @@ Route::get('/service/{slug}', [ServiceController::class, 'frontShow'])->name('se
 Route::get('/contact', [ContactController::class, 'frontIndex'])->name('contact');
 Route::get('/testimonial', [TestimonialController::class, 'frontIndex'])->name('testimonial');
 Route::get('/project', [ProjectController::class, 'frontIndex'])->name('project');
+Route::get('/project/{slug}', [ProjectController::class, 'frontShow'])->name('project.show');
 Route::get('/blog', [BlogController::class, 'frontIndex'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'frontShow'])->name('blog.show');
 Route::get('/team', [TeamController::class, 'frontIndex'])->name('team');

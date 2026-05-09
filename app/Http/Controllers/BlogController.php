@@ -19,7 +19,7 @@ class BlogController extends Controller
     public function frontShow($slug)
     {
         $blog = Blog::with('category')->where('slug', $slug)->first();
-        // return view('blog-details', compact('blog'));
+        return view('blog-details', compact('blog'));
     }
 
     /**

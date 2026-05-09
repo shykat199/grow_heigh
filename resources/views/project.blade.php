@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title','Project')
+@section('title', 'Project')
 @push('style')
 @endpush
 
@@ -9,7 +9,7 @@
         <div class="uk-container">
             <h1>Project</h1>
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="{{ route('home') }}">Home</a></li>
                 <li>Project</li>
             </ul>
         </div>
@@ -19,107 +19,21 @@
     <!-- Start Project Area -->
     <section id="project" class="project-area uk-project uk-section">
         <div class="uk-container">
-            <div
-                class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-3@m uk-child-width-1-2@s"
-            >
-                <div class="single-project">
-                    <a href="#" class="project-img">
-                        <img src="assets/img/project1.jpg" alt="image" />
-                    </a>
+            <div class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-3@m uk-child-width-1-2@s">
+                @foreach ($projects as $project)
+                    <div class="single-project">
+                        <a href="{{ route('project.show', $project->slug) }}" class="project-img">
+                            <img src="{{ asset($project->image) }}" alt="image" />
+                        </a>
 
-                    <div class="project-content">
-                        <h3><a href="single-project.html">Development</a></h3>
-                        <ul>
-                            <li><a href="#">Web</a></li>
-                            <li><a href="#">Mobile</a></li>
-                        </ul>
+                        <div class="project-content">
+                            <h3><a href="{{ route('project.show', $project->slug) }}">{{ $project->title }}</a></h3>
+                            <ul>
+                                <li><a href="#">{{ $project->category->name }}</a></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-
-                <div class="single-project">
-                    <a href="#" class="project-img">
-                        <img src="assets/img/project2.jpg" alt="image" />
-                    </a>
-
-                    <div class="project-content">
-                        <h3><a href="single-project.html">Architecture</a></h3>
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Bridge</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="single-project">
-                    <a href="#" class="project-img">
-                        <img src="assets/img/project3.jpg" alt="image" />
-                    </a>
-
-                    <div class="project-content">
-                        <h3><a href="single-project.html">UX/UI Design</a></h3>
-                        <ul>
-                            <li><a href="#">Web</a></li>
-                            <li><a href="#">Mobile</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="single-project">
-                    <a href="#" class="project-img">
-                        <img src="assets/img/project1.jpg" alt="image" />
-                    </a>
-
-                    <div class="project-content">
-                        <h3><a href="single-project.html">Development</a></h3>
-                        <ul>
-                            <li><a href="#">Web</a></li>
-                            <li><a href="#">Mobile</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="single-project">
-                    <a href="#" class="project-img">
-                        <img src="assets/img/project3.jpg" alt="image" />
-                    </a>
-
-                    <div class="project-content">
-                        <h3><a href="single-project.html">UX/UI Design</a></h3>
-                        <ul>
-                            <li><a href="#">Web</a></li>
-                            <li><a href="#">Mobile</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="single-project">
-                    <a href="#" class="project-img">
-                        <img src="assets/img/project2.jpg" alt="image" />
-                    </a>
-
-                    <div class="project-content">
-                        <h3><a href="single-project.html">Architecture</a></h3>
-                        <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Bridge</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pagination-area">
-                <ul class="uk-pagination uk-flex-center">
-                    <li>
-                        <a href="#"><span class="flaticon-back"></span></a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li class="uk-active"><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li>
-                        <a href="#"><span class="flaticon-right"></span></a>
-                    </li>
-                </ul>
+                @endforeach
             </div>
         </div>
     </section>

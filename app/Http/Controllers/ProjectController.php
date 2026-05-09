@@ -15,6 +15,11 @@ class ProjectController extends Controller
         $projects = Project::with('category')->latest()->get();
         return view('project', compact('projects'));
     }
+    public function frontShow($slug)
+    {
+        $project = Project::with('category')->where('slug', $slug)->first();
+        return view('project-details', compact('project'));
+    }
 
     /**
      * Display a listing of the resource.

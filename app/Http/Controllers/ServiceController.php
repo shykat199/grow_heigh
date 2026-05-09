@@ -23,7 +23,7 @@ class ServiceController extends Controller
     public function frontShow($slug)
     {
         $service = Service::with('category', 'faqs', 'images', 'prices')->where('slug', $slug)->first();
-        // return view('service-details', compact('service'));
+        return view('service-details', compact('service'));
     }
 
     public function index()

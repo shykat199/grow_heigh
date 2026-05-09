@@ -16,10 +16,10 @@
                         <p>
                             {{ $siteSettingData['homepage_subtitle'] ?? '' }}
                         </p>
-                        <a href="contact.html" class="uk-button uk-button-default" style="margin-right: 10px"><i
+                        <a href="{{ route('contact') }} " class="uk-button uk-button-default" style="margin-right: 10px"><i
                                 class="fas fa-star"></i> Get Started</a>
 
-                        <a href="contact.html" class="uk-button uk-button-default"><i class="fas fa-phone"></i> Free
+                        <a href="{{ route('contact') }}" class="uk-button uk-button-default"><i class="fas fa-phone"></i> Free
                             Consultation</a>
                     </div>
                 </div>

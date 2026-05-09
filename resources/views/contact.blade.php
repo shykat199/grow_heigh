@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title','Contact Us')
+@section('title', 'Contact Us')
 @push('style')
 @endpush
 
@@ -9,7 +9,7 @@
         <div class="uk-container">
             <h1>Contact</h1>
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="{{ route('home') }}">Home</a></li>
                 <li>Contact</li>
             </ul>
         </div>
@@ -24,89 +24,47 @@
                 <h2>Get in Touch</h2>
             </div>
 
-            <div
-                class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-2@m uk-child-width-1-1@s"
-            >
-                <div class="item">
-                    <div class="map-img">
-                        <img src="assets/img/map.png" alt="map"/>
+            <div class="uk-width-1-1">
 
-                        <div class="location uk-location1">
-                            <a href="#" class="active">
-                                <div class="location-info">
-                                    <h5>New York</h5>
-                                    <span>198 Collective Street</span>
-                                </div>
-                            </a>
+                <form id="contactForm" style="width:100%;">
+
+                    <div class="uk-grid-medium uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
+
+                        <div>
+                            <input type="text" class="uk-input" name="name" id="name" placeholder="Name" style="width:100%;">
                         </div>
 
-                        <div class="location uk-location2">
-                            <a href="#">
-                                <div class="location-info">
-                                    <h5>London</h5>
-                                    <span>357/71 Collective Street</span>
-                                </div>
-                            </a>
+                        <div>
+                            <input type="email" class="uk-input" name="email" id="email" placeholder="Email" style="width:100%;">
                         </div>
+
+                        <div>
+                            <input type="text" class="uk-input" name="phone" placeholder="Phone" style="width:100%;">
+                        </div>
+
+                        <div>
+                            <input type="text" class="uk-input" name="subject" id="subject" placeholder="Subject"
+                                style="width:100%;">
+                        </div>
+
                     </div>
-                </div>
 
-                <div class="item">
-                    <form id="contactForm">
-                        <div
-                            class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-2@m uk-child-width-1-1@s"
-                        >
-                            <div class="item uk-margin">
-                                <input
-                                    type="text"
-                                    class="uk-input"
-                                    name="name"
-                                    id="name"
-                                    placeholder="Name"
-                                />
-                            </div>
+                    <div class="uk-margin" style="margin-top: 30px !important;">
 
-                            <div class="item uk-margin">
-                                <input
-                                    type="email"
-                                    class="uk-input"
-                                    name="email"
-                                    id="email"
-                                    placeholder="Email"
-                                />
-                            </div>
+                        <textarea name="message" class="uk-textarea" id="message" rows="5" placeholder="Your Message"
+                            style="width:100%;"></textarea>
 
-                            <div class="item uk-margin">
-                                <input type="text" class="uk-input" placeholder="Phone"/>
-                            </div>
+                    </div>
 
-                            <div class="item uk-margin">
-                                <input
-                                    type="text"
-                                    class="uk-input"
-                                    name="subject"
-                                    id="subject"
-                                    placeholder="Subject"
-                                />
-                            </div>
-                        </div>
+                    <button type="submit" class="uk-button uk-button-default" style="margin-left: 15px !important;">
 
-                        <div class="item">
-                <textarea
-                    name="message"
-                    class="uk-textarea"
-                    id="message"
-                    cols="30"
-                    rows="4"
-                    placeholder="Your Message"
-                ></textarea>
-                        </div>
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Submit Message
 
-                        <button type="submit" class="uk-button uk-button-default">
-                            Submit Message
-                        </button>
-                    </form>
-                </div>
+                    </button>
+
+                </form>
+
             </div>
         </div>
     </section>

@@ -1,5 +1,5 @@
 @extends('layout.app')
-@section('title','Blog')
+@section('title', 'Blog')
 @push('style')
 @endpush
 
@@ -8,7 +8,7 @@
         <div class="uk-container">
             <h1>Blog</h1>
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="{{ route('home') }}">Home</a></li>
                 <li>Blog</li>
             </ul>
         </div>
@@ -21,183 +21,28 @@
             <div
                 class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-3@m uk-child-width-1-2@s"
             >
+            @foreach($blogs as $blog)
                 <div class="single-blog-post">
                     <div class="blog-post-image">
                         <a href="single-blog.html">
-                            <img src="assets/img/blog1.jpg" alt="image" />
+                            <img src="{{ asset($blog->image) }}" alt="image" />
                         </a>
                     </div>
 
                     <div class="blog-post-content">
-                        <span class="date">25 April</span>
+                        <span class="date">{{ $blog->created_at->format('d F Y') }}</span>
                         <h3>
-                            <a href="single-blog.html"
-                            >The 13 Best Time Tracking Apps of 2024</a
+                            <a href="{{ route('blog.show', $blog->slug) }}"
+                            >{{ $blog->title }}</a
                             >
                         </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
+                        <a href="{{ route('blog.show', $blog->slug) }}" class="read-more">Read More</a>
                     </div>
                 </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog2.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">26 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >11 Tools to Help You Easily Create Proposals</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog3.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">27 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >The Outlook for Digital Agencies in 4 Charts</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog1.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">25 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >The 13 Best Time Tracking Apps of 2024</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog2.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">26 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >11 Tools to Help You Easily Create Proposals</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog3.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">27 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >The Outlook for Digital Agencies in 4 Charts</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog1.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">25 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >The 13 Best Time Tracking Apps of 2024</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog2.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">26 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >11 Tools to Help You Easily Create Proposals</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <div class="single-blog-post">
-                    <div class="blog-post-image">
-                        <a href="single-blog.html">
-                            <img src="assets/img/blog3.jpg" alt="image" />
-                        </a>
-                    </div>
-
-                    <div class="blog-post-content">
-                        <span class="date">27 April</span>
-                        <h3>
-                            <a href="single-blog.html"
-                            >The Outlook for Digital Agencies in 4 Charts</a
-                            >
-                        </h3>
-                        <a href="single-blog.html" class="read-more">Read More</a>
-                    </div>
-                </div>
+            @endforeach
             </div>
 
-            <div class="pagination-area">
-                <ul class="uk-pagination uk-flex-center">
-                    <li>
-                        <a href="#"><span class="flaticon-back"></span></a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li class="uk-active"><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li>
-                        <a href="#"><span class="flaticon-right"></span></a>
-                    </li>
-                </ul>
-            </div>
+    
         </div>
     </section>
     <!-- End Blog Area -->
