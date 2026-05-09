@@ -85,24 +85,6 @@
                     </a>
                 </li>
                 <li class="side-nav-item">
-                    <a href="{{ route('admin.service-faqs.index') }}" class="side-nav-link">
-                        <span class="menu-icon"><i class="ti ti-help"></i></span>
-                        <span class="menu-text">Service FAQs</span>
-                    </a>
-                </li>
-                <li class="side-nav-item">
-                    <a href="{{ route('admin.service-images.index') }}" class="side-nav-link">
-                        <span class="menu-icon"><i class="ti ti-photo"></i></span>
-                        <span class="menu-text">Service Images</span>
-                    </a>
-                </li>
-                <li class="side-nav-item">
-                    <a href="{{ route('admin.service-prices.index') }}" class="side-nav-link">
-                        <span class="menu-icon"><i class="ti ti-cash"></i></span>
-                        <span class="menu-text">Service Prices</span>
-                    </a>
-                </li>
-                <li class="side-nav-item">
                     <a href="{{ route('admin.projects.index') }}" class="side-nav-link">
                         <span class="menu-icon"><i class="ti ti-folder"></i></span>
                         <span class="menu-text">Projects</span>

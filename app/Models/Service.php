@@ -18,5 +18,29 @@ class Service extends Model
     {
         return $this->belongsTo(Category::class, 'cat_id');
     }
+
+    /**
+     * Get the FAQs for the service.
+     */
+    public function faqs()
+    {
+        return $this->hasMany(ServiceFaq::class, 'service_id');
+    }
+
+    /**
+     * Get the images for the service.
+     */
+    public function images()
+    {
+        return $this->hasMany(ServiceImage::class, 'service_id');
+    }
+
+    /**
+     * Get the prices for the service.
+     */
+    public function prices()
+    {
+        return $this->hasMany(ServicePrice::class, 'service_id');
+    }
 }
 
