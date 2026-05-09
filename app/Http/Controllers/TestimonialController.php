@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TestimonialController extends Controller
 {
@@ -13,7 +14,8 @@ class TestimonialController extends Controller
     public function index()
     {
         $testimonials = Testimonial::all();
-        return view('testimonials.index', compact('testimonials'));
+
+        return view('admin.testimonials.index', compact('testimonials'));
     }
 
     /**
@@ -21,7 +23,7 @@ class TestimonialController extends Controller
      */
     public function create()
     {
-        return view('testimonials.create');
+        return view('admin.testimonials.create');
     }
 
     /**
@@ -31,19 +33,40 @@ class TestimonialController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'message' => 'nullable|string',
         ]);
 
+        // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('testimonials', 'public');
-            $validated['image'] = $imagePath;
+
+            $image = $request->file('image');
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/testimonials');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['image'] = 'uploads/testimonials/'.$fileName;
         }
 
         Testimonial::create($validated);
 
-        return redirect()->route('testimonials.index')->with('success', 'Testimonial created successfully.');
+        toast('Testimonial created successfully.', 'success');
+
+        return redirect()->route('admin.testimonials.index');
     }
 
     /**
@@ -51,7 +74,7 @@ class TestimonialController extends Controller
      */
     public function show(Testimonial $testimonial)
     {
-        return view('testimonials.show', compact('testimonial'));
+        return view('admin.testimonials.show', compact('testimonial'));
     }
 
     /**
@@ -59,7 +82,7 @@ class TestimonialController extends Controller
      */
     public function edit(Testimonial $testimonial)
     {
-        return view('testimonials.edit', compact('testimonial'));
+        return view('admin.testimonials.edit', compact('testimonial'));
     }
 
     /**
@@ -69,19 +92,62 @@ class TestimonialController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'message' => 'nullable|string',
         ]);
 
+        // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('testimonials', 'public');
-            $validated['image'] = $imagePath;
+
+            /*
+            |--------------------------------------------------------------------------
+            | Delete Old Image
+            |--------------------------------------------------------------------------
+            */
+            if ($testimonial->image && file_exists(public_path($testimonial->image))) {
+
+                unlink(public_path($testimonial->image));
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Upload New Image
+            |--------------------------------------------------------------------------
+            */
+            $image = $request->file('image');
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/testimonials');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['image'] = 'uploads/testimonials/'.$fileName;
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Update Testimonial
+        |--------------------------------------------------------------------------
+        */
+        $testimonial->update($validated);
+
+        toast('Testimonial updated successfully.', 'success');
 
         $testimonial->update($validated);
 
-        return redirect()->route('testimonials.index')->with('success', 'Testimonial updated successfully.');
+        return redirect()->route('admin.testimonials.index');
     }
 
     /**
@@ -89,8 +155,13 @@ class TestimonialController extends Controller
      */
     public function destroy(Testimonial $testimonial)
     {
+        // Delete image if exists
+        if ($testimonial->image && file_exists(public_path($testimonial->image))) {
+            unlink(public_path($testimonial->image));
+        }
+
         $testimonial->delete();
 
-        return redirect()->route('testimonials.index')->with('success', 'Testimonial deleted successfully.');
+        return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial deleted successfully.');
     }
 }
