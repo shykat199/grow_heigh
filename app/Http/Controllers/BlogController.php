@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -14,7 +15,8 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::with('category')->get();
-        return view('blogs.index', compact('blogs'));
+
+        return view('admin.blogs.index', compact('blogs'));
     }
 
     /**
@@ -22,8 +24,9 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view('blogs.create', compact('categories'));
+        $categories = Category::where('type', 'blog')->get();
+
+        return view('admin.blogs.create', compact('categories'));
     }
 
     /**
@@ -34,18 +37,40 @@ class BlogController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:blogs',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
         ]);
 
+        // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('blogs', 'public');
-            $validated['image'] = $imagePath;
+
+            $image = $request->file('image');
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/blogs');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['image'] = 'uploads/blogs/'.$fileName;
         }
 
         Blog::create($validated);
 
-        return redirect()->route('blogs.index')->with('success', 'Blog created successfully.');
+        toast('Blog created successfully.', 'success');
+
+        return redirect()->route('admin.blogs.index');
     }
 
     /**
@@ -53,7 +78,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        return view('blogs.show', compact('blog'));
+        return view('admin.blogs.show', compact('blog'));
     }
 
     /**
@@ -61,8 +86,9 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        $categories = Category::all();
-        return view('blogs.edit', compact('blog', 'categories'));
+        $categories = Category::where('type', 'blog')->get();
+
+        return view('admin.blogs.edit', compact('blog', 'categories'));
     }
 
     /**
@@ -73,18 +99,60 @@ class BlogController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:blogs,slug,' . $blog->id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
         ]);
 
+        // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('blogs', 'public');
-            $validated['image'] = $imagePath;
+
+            /*
+            |--------------------------------------------------------------------------
+            | Delete Old Image
+            |--------------------------------------------------------------------------
+            */
+            if ($blog->image && file_exists(public_path($blog->image))) {
+
+                unlink(public_path($blog->image));
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Upload New Image
+            |--------------------------------------------------------------------------
+            */
+            $image = $request->file('image');
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/blogs');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['image'] = 'uploads/blogs/'.$fileName;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Update Blog
+        |--------------------------------------------------------------------------
+        */
         $blog->update($validated);
 
-        return redirect()->route('blogs.index')->with('success', 'Blog updated successfully.');
+        toast('Blog updated successfully.', 'success');
+
+        return redirect()->route('admin.blogs.index');
     }
 
     /**
@@ -92,8 +160,13 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
+        // Delete image if exists
+        if ($blog->image && file_exists(public_path($blog->image))) {
+            unlink(public_path($blog->image));
+        }
+
         $blog->delete();
 
-        return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully.');
+        return redirect()->route('admin.blogs.index')->with('success', 'Blog deleted successfully.');
     }
 }

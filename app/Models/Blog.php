@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['title', 'slug', 'image', 'category_id'])]
+#[Fillable(['title', 'slug', 'image', 'category_id','description'])]
 class Blog extends Model
 {
     /**
