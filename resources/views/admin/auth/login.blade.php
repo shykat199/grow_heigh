@@ -23,6 +23,7 @@
 </head>
 
 <body>
+@include('sweetalert::alert')
 <div class="position-absolute top-0 end-0">
     <img src="{{asset('admin/assets/images/auth-card-bg.svg')}}" class="auth-card-bg-img" alt="auth-card-bg" />
 </div>

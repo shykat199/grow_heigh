@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Toaster;
 
 class CategoryController extends Controller
 {
@@ -14,6 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -43,26 +43,18 @@ class CategoryController extends Controller
 
             $file = $request->file('icon');
 
-            $fileName = time() . '_' . uniqid('', true) . '.' . $file->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
 
-            // Root directory upload path
-            $uploadPath = base_path('upload/categories');
+            // Website root/uploads/categories
+            $uploadPath = $_SERVER['DOCUMENT_ROOT'].'/uploads/categories';
 
-            // Create directory if not exists
-            if (!file_exists($uploadPath)) {
-
-                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
-                    throw new \RuntimeException(
-                        sprintf('Directory "%s" was not created', $uploadPath)
-                    );
-                }
+            if (! file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
             }
 
-            // Move uploaded file
             $file->move($uploadPath, $fileName);
 
-            // Save relative path in DB
-            $validated['icon'] = 'upload/categories/' . $fileName;
+            $validated['icon'] = 'uploads/categories/'.$fileName;
         }
 
         Category::create($validated);
@@ -96,7 +88,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories,slug,' . $category->id,
+            'slug' => 'required|string|max:255|unique:categories,slug,'.$category->id,
             'type' => 'nullable|string|in:blog,service,project,other',
             'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'short_description' => 'nullable|string',
@@ -106,38 +98,55 @@ class CategoryController extends Controller
         // Upload new image
         if ($request->hasFile('icon')) {
 
-            // Delete old image
+            /*
+            |--------------------------------------------------------------------------
+            | Delete Old Image
+            |--------------------------------------------------------------------------
+            */
             if ($category->icon && file_exists(public_path($category->icon))) {
+
                 unlink(public_path($category->icon));
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Upload New Image
+            |--------------------------------------------------------------------------
+            */
             $file = $request->file('icon');
 
-            $fileName = time() . '_' . uniqid('', true) . '.' . $file->getClientOriginalExtension();
+            // Generate unique filename
+            $fileName = time().'_'.uniqid('', true).'.'.$file->getClientOriginalExtension();
 
-            // Upload directory inside public folder
-            $uploadPath = public_path('upload/categories');
+            // Upload path
+            $uploadPath = public_path('uploads/categories');
 
             // Create folder if not exists
-            if (!file_exists($uploadPath)) {
+            if (! file_exists($uploadPath)) {
 
-                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                if (! mkdir($uploadPath, 0755, true) && ! is_dir($uploadPath)) {
+
                     throw new \RuntimeException(
                         sprintf('Directory "%s" was not created', $uploadPath)
                     );
                 }
             }
 
-            // Move uploaded file
+            // Move file
             $file->move($uploadPath, $fileName);
 
             // Save relative path in DB
-            $validated['icon'] = 'upload/categories/' . $fileName;
+            $validated['icon'] = 'uploads/categories/'.$fileName;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Update Category
+        |--------------------------------------------------------------------------
+        */
         $category->update($validated);
 
-        toast('Category updated successfully.','success');
+        toast('Category updated successfully.', 'success');
 
         return redirect()
             ->route('admin.categories.index');
@@ -150,7 +159,8 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
+        toast('Category deleted successfully..', 'success');
+
+        return redirect()->route('admin.categories.index');
     }
 }
-
