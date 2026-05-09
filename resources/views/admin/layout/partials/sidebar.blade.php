@@ -1,14 +1,14 @@
 <div class="sidenav-menu">
     <!-- Brand Logo -->
-    <a href="{{route('admin.dashboard')}}" class="logo">
+    <a href="{{ route('admin.dashboard') }}" class="logo">
         <span class="logo logo-light">
-            <span class="logo-lg"><img src="{{asset('admin/assets/images/logo.png')}}" alt="logo" /></span>
-            <span class="logo-sm"><img src="{{asset('admin/assets/images/logo-sm.png')}}" alt="small logo" /></span>
+            <span class="logo-lg"><img src="{{ asset('admin/assets/images/logo.png') }}" alt="logo" /></span>
+            <span class="logo-sm"><img src="{{ asset('admin/assets/images/logo-sm.png') }}" alt="small logo" /></span>
         </span>
 
         <span class="logo logo-dark">
-            <span class="logo-lg"><img src="{{asset('admin/assets/images/logo-black.png')}}" alt="dark logo" /></span>
-            <span class="logo-sm"><img src="{{asset('admin/assets/images/logo-sm.png')}}" alt="small logo" /></span>
+            <span class="logo-lg"><img src="{{ asset('admin/assets/images/logo-black.png') }}" alt="dark logo" /></span>
+            <span class="logo-sm"><img src="{{ asset('admin/assets/images/logo-sm.png') }}" alt="small logo" /></span>
         </span>
     </a>
 
@@ -23,17 +23,21 @@
     </button>
 
     <div class="scrollbar" data-simplebar="">
-        <div id="user-profile-settings" class="sidenav-user" style="background: url({{asset('admin/assets/images/user-bg-pattern.svg')}})">
+        <div id="user-profile-settings" class="sidenav-user"
+            style="background: url({{ asset('admin/assets/images/user-bg-pattern.svg') }})">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <a href="#!" class="link-reset">
-                        <img src="{{asset('admin/assets/images/users/user-1.jpg')}}" alt="user-image" class="rounded-circle mb-2 avatar-md" />
+                        <img src="{{ asset('admin/assets/images/users/user-1.jpg') }}" alt="user-image"
+                            class="rounded-circle mb-2 avatar-md" />
                         <span class="sidenav-user-name fw-bold">David Dev</span>
                         <span class="fs-12 fw-semibold" data-lang="user-role">Art Director</span>
                     </a>
                 </div>
                 <div>
-                    <a class="dropdown-toggle drop-arrow-none link-reset sidenav-user-set-icon" data-bs-toggle="dropdown" data-bs-offset="0,12" href="#!" aria-haspopup="false" aria-expanded="false">
+                    <a class="dropdown-toggle drop-arrow-none link-reset sidenav-user-set-icon"
+                        data-bs-toggle="dropdown" data-bs-offset="0,12" href="#!" aria-haspopup="false"
+                        aria-expanded="false">
                         <i class="ti ti-settings fs-24 align-middle ms-1"></i>
                     </a>
 
@@ -63,66 +67,64 @@
         <div id="sidenav-menu">
             <ul class="side-nav">
                 <li class="side-nav-item">
-                    <a href="{{route('admin.dashboard')}}" class="side-nav-link">
+                    <a href="{{ route('admin.dashboard') }}" class="side-nav-link">
                         <span class="menu-icon"><i class="ti ti-dashboard"></i></span>
                         <span class="menu-text" data-lang="dashboards">Dashboards</span>
                     </a>
                 </li>
                 <li class="side-nav-item">
-                    <a data-bs-toggle="collapse" href="#ecommerce" aria-expanded="false" aria-controls="ecommerce" class="side-nav-link">
-                        <span class="menu-icon"><i class="ti ti-list-check"></i></span>
-                        <span class="menu-text" data-lang="ecommerce">Management</span>
-                        <span class="menu-arrow"></span>
+                    <a href="{{ route('admin.categories.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-category"></i></span>
+                        <span class="menu-text">Categories</span>
                     </a>
-                    <div class="collapse" id="ecommerce">
-                        <ul class="sub-menu">
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.categories.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Categories</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.services.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Services</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.service-faqs.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Service FAQs</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.service-images.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Service Images</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.service-prices.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Service Prices</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.projects.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Projects</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.blogs.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Blogs</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.testimonials.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Testimonials</span>
-                                </a>
-                            </li>
-                            <li class="side-nav-item">
-                                <a href="{{route('admin.teams.index')}}" class="side-nav-link">
-                                    <span class="menu-text">Team Members</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.services.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-briefcase"></i></span>
+                        <span class="menu-text">Services</span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.service-faqs.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-help"></i></span>
+                        <span class="menu-text">Service FAQs</span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.service-images.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-photo"></i></span>
+                        <span class="menu-text">Service Images</span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.service-prices.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-cash"></i></span>
+                        <span class="menu-text">Service Prices</span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.projects.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-folder"></i></span>
+                        <span class="menu-text">Projects</span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.blogs.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-article"></i></span>
+                        <span class="menu-text">Blogs</span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.testimonials.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-message-star"></i></span>
+                        <span class="menu-text">Testimonials</span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{ route('admin.teams.index') }}" class="side-nav-link">
+                        <span class="menu-icon"><i class="ti ti-users"></i></span>
+                        <span class="menu-text">Team Members</span>
+                    </a>
                 </li>
             </ul>
         </div>
