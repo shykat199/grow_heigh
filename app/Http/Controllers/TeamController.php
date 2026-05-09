@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TeamController extends Controller
 {
@@ -13,7 +14,8 @@ class TeamController extends Controller
     public function index()
     {
         $teams = Team::all();
-        return view('teams.index', compact('teams'));
+
+        return view('admin.teams.index', compact('teams'));
     }
 
     /**
@@ -21,7 +23,7 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('teams.create');
+        return view('admin.teams.create');
     }
 
     /**
@@ -32,19 +34,44 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'email' => 'nullable|email|max:255',
             'bio' => 'nullable|string',
+            'fb_link' => 'nullable|url|max:255',
+            'twitter_link' => 'nullable|url|max:255',
+            'linkedin_link' => 'nullable|url|max:255',
+            'insta_link' => 'nullable|url|max:255',
         ]);
 
+        // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('teams', 'public');
-            $validated['image'] = $imagePath;
+
+            $image = $request->file('image');
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/teams');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['image'] = 'uploads/teams/'.$fileName;
         }
 
         Team::create($validated);
 
-        return redirect()->route('teams.index')->with('success', 'Team member created successfully.');
+        toast('Team member created successfully.', 'success');
+
+        return redirect()->route('admin.teams.index');
     }
 
     /**
@@ -52,7 +79,7 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        return view('teams.show', compact('team'));
+        return view('admin.teams.show', compact('team'));
     }
 
     /**
@@ -60,7 +87,7 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        return view('teams.edit', compact('team'));
+        return view('admin.teams.edit', compact('team'));
     }
 
     /**
@@ -71,19 +98,64 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'email' => 'nullable|email|max:255',
             'bio' => 'nullable|string',
+            'fb_link' => 'nullable|url|max:255',
+            'twitter_link' => 'nullable|url|max:255',
+            'linkedin_link' => 'nullable|url|max:255',
+            'insta_link' => 'nullable|url|max:255',
         ]);
 
+        // Handle image upload
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('teams', 'public');
-            $validated['image'] = $imagePath;
+
+            /*
+            |--------------------------------------------------------------------------
+            | Delete Old Image
+            |--------------------------------------------------------------------------
+            */
+            if ($team->image && file_exists(public_path($team->image))) {
+
+                unlink(public_path($team->image));
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Upload New Image
+            |--------------------------------------------------------------------------
+            */
+            $image = $request->file('image');
+
+            // Generate unique filename
+            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            // Upload path
+            $uploadPath = public_path('uploads/teams');
+
+            // Create folder if not exists
+            if (! file_exists($uploadPath)) {
+
+                mkdir($uploadPath, 0755, true);
+            }
+
+            // Move uploaded file
+            $image->move($uploadPath, $fileName);
+
+            // Save relative path in DB
+            $validated['image'] = 'uploads/teams/'.$fileName;
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Update Team Member
+        |--------------------------------------------------------------------------
+        */
         $team->update($validated);
 
-        return redirect()->route('teams.index')->with('success', 'Team member updated successfully.');
+        toast('Team member updated successfully.', 'success');
+
+        return redirect()->route('admin.teams.index');
     }
 
     /**
@@ -91,8 +163,13 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
+        // Delete image if exists
+        if ($team->image && file_exists(public_path($team->image))) {
+            unlink(public_path($team->image));
+        }
+
         $team->delete();
 
-        return redirect()->route('teams.index')->with('success', 'Team member deleted successfully.');
+        return redirect()->route('admin.teams.index')->with('success', 'Team member deleted successfully.');
     }
 }
