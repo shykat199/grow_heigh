@@ -20,7 +20,7 @@ class SiteSettingController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Handle Site Logo Upload
+        | Upload Site Logo
         |--------------------------------------------------------------------------
         */
         if ($request->hasFile('site_logo')) {
@@ -28,15 +28,17 @@ class SiteSettingController extends Controller
             $logo = $request->file('site_logo');
 
             // Generate unique filename
-            $logoName = time().'_logo_'.uniqid().'.'.$logo->getClientOriginalExtension();
+            $logoName = time() . '_logo_' . uniqid('', true) . '.' . $logo->getClientOriginalExtension();
 
-            // Upload path
-            $logoPath = public_path('uploads/site_settings');
+            // root/uploads/site_settings
+            $logoPath = base_path('uploads/site_settings');
 
             // Create folder if not exists
-            if (! file_exists($logoPath)) {
+            if (!file_exists($logoPath)) {
 
-                mkdir($logoPath, 0755, true);
+                if (!mkdir($logoPath, 0755, true) && !is_dir($logoPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $logoPath));
+                }
             }
 
             // Move uploaded file
@@ -45,13 +47,13 @@ class SiteSettingController extends Controller
             // Save path in database
             SiteSetting::updateOrCreate(
                 ['key' => 'site_logo'],
-                ['value' => 'uploads/site_settings/'.$logoName]
+                ['value' => 'uploads/site_settings/' . $logoName]
             );
         }
 
         /*
         |--------------------------------------------------------------------------
-        | Handle Favicon Upload
+        | Upload Site Favicon
         |--------------------------------------------------------------------------
         */
         if ($request->hasFile('site_favicon')) {
@@ -59,15 +61,17 @@ class SiteSettingController extends Controller
             $favicon = $request->file('site_favicon');
 
             // Generate unique filename
-            $faviconName = time().'_favicon_'.uniqid().'.'.$favicon->getClientOriginalExtension();
+            $faviconName = time() . '_favicon_' . uniqid('', true) . '.' . $favicon->getClientOriginalExtension();
 
-            // Upload path
-            $faviconPath = public_path('uploads/site_settings');
+            // root/uploads/site_settings
+            $faviconPath = base_path('uploads/site_settings');
 
             // Create folder if not exists
-            if (! file_exists($faviconPath)) {
+            if (!file_exists($faviconPath)) {
 
-                mkdir($faviconPath, 0755, true);
+                if (!mkdir($faviconPath, 0755, true) && !is_dir($faviconPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $faviconPath));
+                }
             }
 
             // Move uploaded file
@@ -76,7 +80,7 @@ class SiteSettingController extends Controller
             // Save path in database
             SiteSetting::updateOrCreate(
                 ['key' => 'site_favicon'],
-                ['value' => 'uploads/site_settings/'.$faviconName]
+                ['value' => 'uploads/site_settings/' . $faviconName]
             );
         }
 
