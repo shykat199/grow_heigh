@@ -13,12 +13,12 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $category = Category::all();
+        $category = Category::where('type','service')->get();
         $service = Service::all();
         $projects = Project::with('category')->latest()->take(5)->get();
         $testimonial = Testimonial::all();
         $team = Team::all();
         $blog = Blog::all();
-        return view('index', compact('category', 'service', 'projects', 'testimonial', 'team', 'blog'));   
+        return view('index', compact('category', 'service', 'projects', 'testimonial', 'team', 'blog'));
     }
 }
