@@ -47,17 +47,17 @@ class ServiceController extends Controller
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'work_benefit' => 'nullable|string',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:10240',
+
             // Faqs
             'faqs' => 'nullable|array',
             'faqs.*.question' => 'required_with:faqs|string|max:255',
             'faqs.*.answer' => 'required_with:faqs|string',
-            
+
             // Images
             'service_images' => 'nullable|array',
-            'service_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            
+            'service_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+
             // Prices
             'prices' => 'nullable|array',
             'prices.*.title' => 'required_with:prices|string|max:255',
@@ -70,11 +70,22 @@ class ServiceController extends Controller
             // Process icon
             $iconPath = null;
             if ($request->hasFile('icon')) {
+
                 $icon = $request->file('icon');
-                $fileName = time().'_icon_'.uniqid().'.'.$icon->getClientOriginalExtension();
-                $uploadPath = public_path('uploads/services');
-                if (! file_exists($uploadPath)) mkdir($uploadPath, 0755, true);
+
+                $fileName = time().'_icon_'.uniqid('', true).'.'.$icon->getClientOriginalExtension();
+
+                // root/uploads/services
+                $uploadPath = base_path('uploads/services');
+
+                if (!file_exists($uploadPath)) {
+                    if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                    }
+                }
+
                 $icon->move($uploadPath, $fileName);
+
                 $iconPath = 'uploads/services/'.$fileName;
             }
 
@@ -104,12 +115,22 @@ class ServiceController extends Controller
 
             // Save Images
             if ($request->hasFile('service_images')) {
+
                 foreach ($request->file('service_images') as $img) {
-                    $fileName = time().'_gallery_'.uniqid().'.'.$img->getClientOriginalExtension();
-                    $uploadPath = public_path('uploads/services/gallery');
-                    if (! file_exists($uploadPath)) mkdir($uploadPath, 0755, true);
+
+                    $fileName = time().'_gallery_'.uniqid('', true).'.'.$img->getClientOriginalExtension();
+
+                    // root/uploads/services/gallery
+                    $uploadPath = base_path('uploads/services/gallery');
+
+                    if (!file_exists($uploadPath)) {
+                        if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                            throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                        }
+                    }
+
                     $img->move($uploadPath, $fileName);
-                    
+
                     ServiceImage::create([
                         'service_id' => $service->id,
                         'images' => 'uploads/services/gallery/'.$fileName,
@@ -163,22 +184,22 @@ class ServiceController extends Controller
             'short_description' => 'nullable|string',
             'description' => 'nullable|string',
             'work_benefit' => 'nullable|string',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:10240',
+
             // Faqs
             'faqs' => 'nullable|array',
             'faqs.*.id' => 'nullable|exists:service_faqs,id',
             'faqs.*.question' => 'required_with:faqs|string|max:255',
             'faqs.*.answer' => 'required_with:faqs|string',
-            
+
             // Images (new ones)
             'service_images' => 'nullable|array',
-            'service_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            
+            'service_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+
             // Delete existing images
             'delete_images' => 'nullable|array',
             'delete_images.*' => 'exists:service_images,id',
-            
+
             // Prices
             'prices' => 'nullable|array',
             'prices.*.id' => 'nullable|exists:service_prices,id',
@@ -191,16 +212,32 @@ class ServiceController extends Controller
         try {
             // Process icon
             if ($request->hasFile('icon')) {
+
                 // Delete old icon
-                if ($service->icon && file_exists(public_path($service->icon))) {
-                    unlink(public_path($service->icon));
+                if ($service->icon && file_exists(base_path($service->icon))) {
+
+                    unlink(base_path($service->icon));
                 }
-                
+
                 $icon = $request->file('icon');
-                $fileName = time().'_icon_'.uniqid().'.'.$icon->getClientOriginalExtension();
-                $uploadPath = public_path('uploads/services');
-                if (! file_exists($uploadPath)) mkdir($uploadPath, 0755, true);
+
+                $fileName = time().'_icon_'.uniqid('', true).'.'.$icon->getClientOriginalExtension();
+
+                // root/uploads/services
+                $uploadPath = base_path('uploads/services');
+
+                // Create folder if not exists
+                if (!file_exists($uploadPath)) {
+
+                    if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                    }
+                }
+
+                // Move uploaded file
                 $icon->move($uploadPath, $fileName);
+
+                // Save path
                 $service->icon = 'uploads/services/'.$fileName;
             }
 
@@ -280,7 +317,7 @@ class ServiceController extends Controller
                 $imagesToDelete = ServiceImage::whereIn('id', $validated['delete_images'])
                     ->where('service_id', $service->id)
                     ->get();
-                
+
                 foreach ($imagesToDelete as $img) {
                     if ($img->images && file_exists(public_path($img->images))) {
                         unlink(public_path($img->images));
@@ -291,12 +328,26 @@ class ServiceController extends Controller
 
             // Handle New Images Upload
             if ($request->hasFile('service_images')) {
+
                 foreach ($request->file('service_images') as $img) {
-                    $fileName = time().'_gallery_'.uniqid().'.'.$img->getClientOriginalExtension();
-                    $uploadPath = public_path('uploads/services/gallery');
-                    if (! file_exists($uploadPath)) mkdir($uploadPath, 0755, true);
+
+                    $fileName = time().'_gallery_'.uniqid('', true).'.'.$img->getClientOriginalExtension();
+
+                    // root/uploads/services/gallery
+                    $uploadPath = base_path('uploads/services/gallery');
+
+                    // Create folder if not exists
+                    if (!file_exists($uploadPath)) {
+
+                        if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                            throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                        }
+                    }
+
+                    // Move uploaded file
                     $img->move($uploadPath, $fileName);
-                    
+
+                    // Save in database
                     ServiceImage::create([
                         'service_id' => $service->id,
                         'images' => 'uploads/services/gallery/'.$fileName,
@@ -330,13 +381,13 @@ class ServiceController extends Controller
                 }
             }
 
-            // Relations will be deleted sequentially. 
-            // Note: Since we haven't checked if onDelete('cascade') was defined in migration, 
+            // Relations will be deleted sequentially.
+            // Note: Since we haven't checked if onDelete('cascade') was defined in migration,
             // we will explicitly delete relations to be safe.
             $service->images()->delete();
             $service->faqs()->delete();
             $service->prices()->delete();
-            
+
             $service->delete();
 
             DB::commit();

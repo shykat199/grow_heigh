@@ -4,7 +4,7 @@
             <!-- Topbar Brand Logo -->
             <div class="logo-topbar">
                 <!-- Logo light -->
-                <a href="index.html" class="logo-light">
+                <a href="{{route('admin.dashboard')}}" class="logo-light">
                                 <span class="logo-lg">
                                     <img src="{{asset('admin/assets/images/logo.png')}}" alt="logo"/>
                                 </span>
@@ -14,7 +14,7 @@
                 </a>
 
                 <!-- Logo Dark -->
-                <a href="index.html" class="logo-dark">
+                <a href="{{route('admin.dashboard')}}" class="logo-dark">
                                 <span class="logo-lg">
                                     <img src="{{asset('admin/assets/images/logo-black.png')}}" alt="dark logo"/>
                                 </span>
@@ -96,10 +96,10 @@
                         </div>
 
                         <!-- My Profile -->
-                        {{-- <a href="#!" class="dropdown-item">
-                            <i class="ti ti-user-circle me-1 fs-lg align-middle"></i>
-                            <span class="align-middle">Profile</span>
-                        </a> --}}
+                        <a href="{{ route('home') }}" class="dropdown-item">
+                            <i class="ti ti-home me-1 fs-lg align-middle"></i>
+                            <span class="align-middle">Home</span>
+                        </a>
 
                         <!-- Divider -->
                         <div class="dropdown-divider"></div>

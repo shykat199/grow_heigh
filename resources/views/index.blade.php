@@ -1,6 +1,36 @@
 @extends('layout.app')
 @section('title', 'Home')
-@push('style')
+@push('front-style')
+
+    <style>
+        .service-filter-btn {
+            cursor: pointer;
+        }
+
+        .service-filter-btn.active .single-features-box {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            border: 1px solid #ff4a17;
+        }
+
+        .single-features-box {
+            transition: all 0.35s ease;
+        }
+
+        .service-card {
+            transition: all 0.45s ease;
+        }
+
+        .service-card.is-moving {
+            opacity: 0;
+            transform: translateY(25px) scale(0.96);
+        }
+
+        .service-card.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -34,7 +64,7 @@
             <div class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-3@m">
 
                 @foreach ($category as $item)
-                    <div class="uk-item">
+                    <div class="uk-item service-filter-btn" data-id="service-{{ $item->id }}">
                         <div class="single-features-box">
                             <div class="icon">
 
@@ -132,9 +162,9 @@
                 <div class="bar"></div>
             </div>
 
-            <div class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-3@m uk-child-width-1-2@s">
+            <div id="serviceGrid" class="uk-grid uk-grid-match uk-grid-medium uk-child-width-1-3@m uk-child-width-1-2@s">
                 @foreach ($service as $item)
-                    <div class="item">
+                    <div class="item service-card" data-id="service-category-{{ $item->category->id }}">
                         <div class="single-services">
                             <div class="icon" style="width:70px;
                                             height:70px;
@@ -504,5 +534,54 @@
     <!-- End Contact Area -->
 
 @endsection
-@push('scripts')
+@push('front-scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const filterButtons = document.querySelectorAll('.service-filter-btn');
+            const serviceGrid = document.getElementById('serviceGrid');
+
+            filterButtons.forEach(button => {
+
+                button.addEventListener('click', function () {
+
+                    const categoryId = this.dataset.id.replace('service-', 'service-category-');
+
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const serviceCards = Array.from(serviceGrid.querySelectorAll('.service-card'));
+
+                    serviceCards.forEach(card => {
+                        card.classList.add('is-moving');
+                        card.classList.remove('is-visible');
+                    });
+
+                    setTimeout(() => {
+
+                        const matchedCards = serviceCards.filter(card => card.dataset.id === categoryId);
+                        const otherCards = serviceCards.filter(card => card.dataset.id !== categoryId);
+
+                        [...matchedCards, ...otherCards].forEach(card => {
+                            serviceGrid.appendChild(card);
+                        });
+
+                        setTimeout(() => {
+                            serviceCards.forEach(card => {
+                                card.classList.remove('is-moving');
+                                card.classList.add('is-visible');
+                            });
+                        }, 50);
+
+                        serviceGrid.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+
+                    }, 350);
+                });
+            });
+        });
+    </script>
 @endpush

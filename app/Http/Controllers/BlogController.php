@@ -50,7 +50,7 @@ class BlogController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:blogs',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
         ]);
@@ -61,15 +61,17 @@ class BlogController extends Controller
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/blogs');
+            // root/uploads/blogs
+            $uploadPath = base_path('uploads/blogs');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file
@@ -112,7 +114,7 @@ class BlogController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:blogs,slug,' . $blog->id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
         ]);
@@ -125,9 +127,9 @@ class BlogController extends Controller
             | Delete Old Image
             |--------------------------------------------------------------------------
             */
-            if ($blog->image && file_exists(public_path($blog->image))) {
+            if ($blog->image && file_exists(base_path($blog->image))) {
 
-                unlink(public_path($blog->image));
+                unlink(base_path($blog->image));
             }
 
             /*
@@ -138,15 +140,17 @@ class BlogController extends Controller
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/blogs');
+            // root/uploads/blogs
+            $uploadPath = base_path('uploads/blogs');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file

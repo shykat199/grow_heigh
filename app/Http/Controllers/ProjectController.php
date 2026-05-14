@@ -50,7 +50,7 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:projects',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'date' => 'nullable|date',
@@ -64,15 +64,17 @@ class ProjectController extends Controller
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/projects');
+            // root/uploads/projects
+            $uploadPath = base_path('uploads/projects');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file
@@ -116,7 +118,7 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:projects,slug,'.$project->id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'date' => 'nullable|date',
@@ -127,24 +129,35 @@ class ProjectController extends Controller
         // Handle image upload
         if ($request->hasFile('image')) {
 
-            // Delete old image
-            if ($project->image && file_exists(public_path($project->image))) {
+            /*
+            |--------------------------------------------------------------------------
+            | Delete Old Image
+            |--------------------------------------------------------------------------
+            */
+            if ($project->image && file_exists(base_path($project->image))) {
 
-                unlink(public_path($project->image));
+                unlink(base_path($project->image));
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | Upload New Image
+            |--------------------------------------------------------------------------
+            */
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/projects');
+            // root/uploads/projects
+            $uploadPath = base_path('uploads/projects');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file

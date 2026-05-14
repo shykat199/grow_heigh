@@ -40,7 +40,7 @@ class TestimonialController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'message' => 'nullable|string',
         ]);
 
@@ -50,15 +50,17 @@ class TestimonialController extends Controller
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/testimonials');
+            // root/uploads/testimonials
+            $uploadPath = base_path('uploads/testimonials');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file
@@ -99,7 +101,7 @@ class TestimonialController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'message' => 'nullable|string',
         ]);
 
@@ -111,9 +113,9 @@ class TestimonialController extends Controller
             | Delete Old Image
             |--------------------------------------------------------------------------
             */
-            if ($testimonial->image && file_exists(public_path($testimonial->image))) {
+            if ($testimonial->image && file_exists(base_path($testimonial->image))) {
 
-                unlink(public_path($testimonial->image));
+                unlink(base_path($testimonial->image));
             }
 
             /*
@@ -124,15 +126,17 @@ class TestimonialController extends Controller
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/testimonials');
+            // root/uploads/testimonials
+            $uploadPath = base_path('uploads/testimonials');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file

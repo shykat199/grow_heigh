@@ -41,7 +41,7 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'email' => 'nullable|email|max:255',
             'bio' => 'nullable|string',
             'fb_link' => 'nullable|url|max:255',
@@ -56,15 +56,17 @@ class TeamController extends Controller
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/teams');
+            // root/uploads/teams
+            $uploadPath = base_path('uploads/teams');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file
@@ -105,7 +107,7 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'email' => 'nullable|email|max:255',
             'bio' => 'nullable|string',
             'fb_link' => 'nullable|url|max:255',
@@ -122,9 +124,9 @@ class TeamController extends Controller
             | Delete Old Image
             |--------------------------------------------------------------------------
             */
-            if ($team->image && file_exists(public_path($team->image))) {
+            if ($team->image && file_exists(base_path($team->image))) {
 
-                unlink(public_path($team->image));
+                unlink(base_path($team->image));
             }
 
             /*
@@ -135,15 +137,17 @@ class TeamController extends Controller
             $image = $request->file('image');
 
             // Generate unique filename
-            $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$image->getClientOriginalExtension();
 
-            // Upload path
-            $uploadPath = public_path('uploads/teams');
+            // root/uploads/teams
+            $uploadPath = base_path('uploads/teams');
 
             // Create folder if not exists
-            if (! file_exists($uploadPath)) {
+            if (!file_exists($uploadPath)) {
 
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             // Move uploaded file

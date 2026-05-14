@@ -34,7 +34,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:categories,slug',
             'type' => 'nullable|string|in:blog,service,project,other',
-            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:10240',
             'short_description' => 'nullable|string',
             'status' => 'required|in:0,1',
         ]);
@@ -43,13 +43,15 @@ class CategoryController extends Controller
 
             $file = $request->file('icon');
 
-            $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+            $fileName = time().'_'.uniqid('', true).'.'.$file->getClientOriginalExtension();
 
             // Website root/uploads/categories
             $uploadPath = $_SERVER['DOCUMENT_ROOT'].'/uploads/categories';
 
             if (! file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+                if (!mkdir($uploadPath, 0755, true) && !is_dir($uploadPath)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $uploadPath));
+                }
             }
 
             $file->move($uploadPath, $fileName);
@@ -90,7 +92,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:categories,slug,'.$category->id,
             'type' => 'nullable|string|in:blog,service,project,other',
-            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:10240',
             'short_description' => 'nullable|string',
             'status' => 'required|in:0,1',
         ]);

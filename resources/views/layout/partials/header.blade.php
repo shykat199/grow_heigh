@@ -49,17 +49,6 @@
                         <li class="{{\Illuminate\Support\Facades\Route::is('contact') ? 'uk-active' : ''}} "><a href="{{route('contact')}}">Contact</a></li>
                     </ul>
                 </nav>
-
-                <div class="lang">
-                    <form>
-                        <div>
-                            <select>
-                                <option value="eng">En</option>
-                                <option value="ge">Ge</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </div>

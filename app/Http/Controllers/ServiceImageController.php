@@ -33,7 +33,7 @@ class ServiceImageController extends Controller
     {
         $validated = $request->validate([
             'service_id' => 'required|exists:services,id',
-            'images' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         if ($request->hasFile('images')) {
@@ -70,7 +70,7 @@ class ServiceImageController extends Controller
     {
         $validated = $request->validate([
             'service_id' => 'required|exists:services,id',
-            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         if ($request->hasFile('images')) {
